@@ -1,5 +1,44 @@
 import math
 import os
+from functools import cache
+
+
+@cache
+def get_factors(num: int) -> set[int]:
+    """Gets the factors for a given number. Returns a set[int] of factors.
+    # E.g. when num=8, factors will be 1, 2, 4, 8"""
+    factors = set()
+
+    # Iterate from 1 to sqrt of num,
+    # since a larger factor of num must be a multiple of a smaller factor already checked
+    for i in range(1, int(num**0.5) + 1):  # e.g. with num=8, this is range(1, 3)
+        if (
+            num % i == 0
+        ):  # if it is a factor, then dividing num by it will yield no remainder
+            factors.add(i)
+            factors.add(num // i)
+
+    return factors
+
+
+def to_base_n(number: int, base: int):
+    """Convert any integer number into a base-n string representation of that number.
+    E.g. to_base_n(38, 5) = 123
+
+    Args:
+        number (int): The number to convert
+        base (int): The base to apply
+
+    Returns:
+        [str]: The string representation of the number
+    """
+    ret_str = ""
+    curr_num = number
+    while curr_num:
+        ret_str = str(curr_num % base) + ret_str
+        curr_num //= base
+
+    return ret_str if number > 0 else "0"
 
 
 def sign(x):
@@ -34,7 +73,7 @@ def ints(string: str, digits: int = 0, signs: bool = True):
     count = 0
     for idx, c in enumerate(string):
         if str(c).isnumeric():
-            if signs == True and idx > 0:
+            if signs is True and idx > 0:
                 if string[idx - 1] == "-":
                     tempString.append("-")
             tempString.append(c)
@@ -98,10 +137,10 @@ def extendList(input_list: list, index: int, fill=0):
     """
     while True:
         try:
-            temp = tempList[index]
+            temp = tempList[index]  # noqa: F821, F841
             break
         except IndexError:
-            tempList.append(fill)
+            tempList.append(fill)  # noqa: F821
         except TypeError:
             tempList = []
             tempList.append(input_list)
@@ -114,7 +153,7 @@ def extendList2D(li: list, index1: int, index2: int, fill=0):
     with initial values = (fill)  for  li[index1][index2] to exist"""
     tempList = li
     try:
-        temp = tempList[index1][index2]
+        temp = tempList[index1][index2]  # noqa: F841
     except IndexError:
         while len(tempList) <= index1:
             tempList.append([fill])
@@ -186,14 +225,14 @@ def printArray(
     if vRange == []:
         vRange = [0, len(input_array) - 1]
 
-    if hRange[0] == None:
+    if hRange[0] is None:
         hRange[1] = 0
-    if hRange[1] == None:
+    if hRange[1] is None:
         hRange[1] = len(input_array[0]) - 1
 
-    if vRange[1] == None:
+    if vRange[1] is None:
         vRange[1] = len(input_array) - 1
-    if vRange[0] == None:
+    if vRange[0] is None:
         vRange[1] = 0
 
     s = "[{},{}] to [{},{}] revX={} revY={}".format(

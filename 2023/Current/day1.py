@@ -1,21 +1,17 @@
-from util import *
-from collections import namedtuple
-from decorators import timer
-import re
-
-wipeTerminal()
+from helpers import get_locations, read_input
+from loguru import logger  # noqa
+from util import wipeTerminal
 
 DAY = 1
 
-INPUT_FOLDER: str = os.path.join(os.getcwd(), "Inputs")
+locations = get_locations(f"day{DAY}")
+# logger.add(f"{locations.log_file}", backtrace=True, diagnose=True)
+wipeTerminal()
 
-input_path = os.path.join(INPUT_FOLDER, f"day{DAY}.txt")
-exampleinput_path = os.path.join(INPUT_FOLDER, f"day{DAY}example.txt")
-
-INPUT = open(input_path, "r", encoding="utf16", errors="ignore")
-# EXAMPLE_INPUT = open(exampleinput_path, "r")
-
-content = INPUT.read().strip()
+content = read_input(locations.input_file)
 cl = content.split("\n")
 
-printArray(cl)
+for line in cl:
+    print(line)
+
+# printArray(cl, [0, 0])

@@ -1,3 +1,16 @@
+tester.py
+recursion_example.py
+vlogger.py
+logs
+
+# vscode black formatter settings
+.vscode/
+MobiPik.code-workspace
+
+Inputs
+.config
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -160,13 +173,6 @@ cython_debug/
 #.idea/
 
 
-# vscode black formatter settings
-.vscode/
-MobiPik.code-workspace
-
-Inputs
-.config
-
 
 # .idea
 .idea/
@@ -176,5 +182,3 @@ test*.png
 images/temp/
 settings.txt
 
-tester.py
-recursion_example.py
