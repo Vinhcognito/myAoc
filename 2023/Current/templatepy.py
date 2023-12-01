@@ -12,7 +12,7 @@ from util import (  # noqa: F401
 DAY = 1
 
 locations = get_locations(f"day{DAY}")
-# logger.add(f"{locations.log_file}", backtrace=True, diagnose=True)
+logger.add(f"{locations.log_file}", backtrace=True, diagnose=True)
 logger_config(logger)
 clear_terminal()
 

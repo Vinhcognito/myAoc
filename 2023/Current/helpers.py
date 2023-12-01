@@ -50,6 +50,7 @@ class Locations:
     input_dir: Path
     output_dir: Path
     log_file: Path
+    log_file_timestamp: Path
     input_file: Path
     example_file: Path
 
@@ -60,7 +61,8 @@ def get_locations(script_name, folder="") -> Locations:
     script_dir = Path(Path().resolve(), folder, "Current")
     input_dir = Path(current_directory, "Inputs")
     output_dir = Path(current_directory, "logs")
-    log_file = Path(
+    log_file = Path(output_dir, f"{script_name}.log")
+    log_file_timestamp = Path(
         output_dir, f"{script_name}-{datetime.now().strftime("%Y-%m-%d-%H%M")}.log"
     )
     input_file = Path(input_dir, f"{script_name}.txt")
@@ -72,6 +74,7 @@ def get_locations(script_name, folder="") -> Locations:
         input_dir,
         output_dir,
         log_file,
+        log_file_timestamp,
         input_file,
         example_file,
     )
