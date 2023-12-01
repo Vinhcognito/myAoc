@@ -1,20 +1,40 @@
 import math
 import os
+import sys
 from functools import cache
 
 __all__ = [
+    "logger_config",
     "get_factors",
     "to_base_n",
     "sign",
     "clear_terminal",
-    "list_ints",
-    "list_strs",
+    "ints",
+    "strs",
     "extend_list",
     "extend_list_2D",
     "extend_list_rect",
     "print_array",
     "text2int",
 ]
+
+
+def logger_config(loguru_logger):
+    """setup loguru with a modified console printout"""
+    loguru_logger.remove(0)
+    loguru_logger.add(
+        sys.stderr,
+        level="DEBUG",
+        format="| <level>{level: <8}</level> | <cyan>{file}</cyan>:<cyan>{function}</cyan>:<bold><green>{line}</green></bold> - <level>{message}</level>",
+        filter=None,
+        colorize=None,
+        serialize=False,
+        backtrace=True,
+        diagnose=True,
+        enqueue=False,
+        context=None,
+        catch=True,
+    )
 
 
 @cache
@@ -33,6 +53,11 @@ def get_factors(num: int) -> set[int]:
             factors.add(num // i)
 
     return factors
+
+
+def wait_for_input():
+    """function for pausing a stream of printouts until user input is received"""
+    input("")
 
 
 def to_base_n(number: int, base: int):
@@ -68,13 +93,10 @@ def clear_terminal(s: str = "=", num: int = 80):
     return
 
 
-def list_ints(string: str, digits: int = 0, signs: bool = True):
+def ints(string: str, digits: int = 0, signs: bool = True):
     """Returns list of all integers in string
 
-
-    Searches string for connected integers flanked by non integer characters
-    Will recognize negative signs (-) in front of digits by default
-
+    Searches string for connected integers flanked by non integer characters, use digits=1 for each item to be 1 digit in length
 
     ### digits (0):\n
         max number of digits that each int is allowed to have
@@ -107,7 +129,7 @@ def list_ints(string: str, digits: int = 0, signs: bool = True):
     return intlist
 
 
-def list_strs(
+def strs(
     string: str,
     maxchars: int = 0,
 ):
@@ -149,43 +171,51 @@ def extend_list(input_list: list, index: int, fill=0):
     fill:
         default value for newly created indexes in list
     """
+    temp_list = input_list
     while True:
         try:
-            temp = tempList[index]  # noqa: F821, F841
+            # try to access list index
+            temp = temp_list[index]  # noqa: F821, F841
             break
         except IndexError:
-            tempList.append(fill)  # noqa: F821
+            # if list not lot enough
+            temp_list.append(fill)  # noqa: F821
+        # is this needed?
+        """
         except TypeError:
-            tempList = []
-            tempList.append(input_list)
-            return extend_list(tempList, index, fill)
-    return tempList
+            
+            temp_list.append(input_list)
+            return extend_list(temp_list, index, fill)
+        """
+    return temp_list
 
 
-def extend_list_2D(li: list, index1: int, index2: int, fill=0):
+def extend_list_2D(input_list: list, index1: int, index2: int, fill=0):
     """Copies contents of a list and returns it extended to just enough
-    with initial values = (fill)  for  li[index1][index2] to exist"""
-    tempList = li
+    with default values = (fill)  for  li[index1][index2] to exist"""
+    temp_list = input_list
     try:
-        temp = tempList[index1][index2]  # noqa: F841
+        temp = temp_list[index1][index2]  # noqa: F841
     except IndexError:
-        while len(tempList) <= index1:
-            tempList.append([fill])
-        tempList[index1] = extend_list(tempList[index1], index2, fill)
+        # append until index1 satisfied
+        while len(temp_list) <= index1:
+            temp_list.append([fill])
+        # extend slice at li[index1] to satisfy index2
+        temp_list[index1] = extend_list(temp_list[index1], index2, fill)
     except TypeError:
-        while len(tempList) <= index1:
-            tempList.append([fill])
-        tempList[index1] = extend_list(tempList[index1], index2, fill)
-    return tempList
+        while len(temp_list) <= index1:
+            temp_list.append([fill])
+        temp_list[index1] = extend_list(temp_list[index1], index2, fill)
+    return temp_list
 
 
 def extend_list_rect(li: list, index1: int = 1, index2: int = 1, fill=0):
     """Copies contents of a list and returns it extended so that all possible indices
     within [0,index1]X[0,index2] are created with initial values = (fill)"""
-    tempList = li
-    for i in range(index1):
-        tempList = extend_list_2D(tempList, i, index2 - 1, fill)
-    return tempList
+    temp_list = li
+    for i in range(index1 + 1):
+        temp_list = extend_list_2D(temp_list, i, index2, fill)
+    return temp_list
 
 
 def print_array(
@@ -249,14 +279,13 @@ def print_array(
     if vRange[0] is None:
         vRange[1] = 0
 
-    s = "[{},{}] to [{},{}] revX={} revY={}".format(
-        hRange[0], hRange[1], vRange[0], vRange[1], revX, revY
-    )
+    param_str = f"[{hRange[0]},{hRange[1]}] to [{vRange[0]},{vRange[1]}] revX={revX} revY={revY}"
+
     if tight:
-        print("\n{} printing tight from {}".format(title, s))
+        print(f"\ntitle printing tight from {param_str}\n")
     else:
-        print("\n{} printing comma separated values from {}".format(title, s))
-    print("")
+        print(f"\n{title} printing comma separated values from {param_str}\n")
+
     match revY, revX:
         case False, False:
             for x in range(vRange[0], vRange[1] + 1):

@@ -9,7 +9,7 @@ from util import (  # noqa: F401
     print_array,
 )
 
-DAY = 1
+DAY = 2
 
 locations = get_locations(f"day{DAY}")
 # logger.add(f"{locations.log_file}", backtrace=True, diagnose=True)

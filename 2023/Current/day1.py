@@ -20,27 +20,26 @@ WORDS = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight",
 
 # part 1
 sum = 0
-sumstr = ""
 
 for line in cl:
     li = []
+    sumstr = ""
     for c in line:
         if c in NUMS:
             li.append(c)
 
     sumstr = li[0] + li[-1]
     sum += int(sumstr)
-    sumstr = ""
 
 logger.info(f"part 1 sum = {sum}")
 
 
 # part 2
 sum = 0
-sumstr = ""
 
 for line in cl:
     dict = {}
+    sumstr = ""
     for n, c in enumerate(line):
         if c in NUMS:
             dict[n] = c
@@ -50,10 +49,9 @@ for line in cl:
             dict[ma.span()[0]] = text2int(word)
 
     k = list(dict.keys())
-
     k.sort()
-    sumstr = str(dict[k[0]]) + str(dict[k[-1]])
 
+    sumstr = str(dict[k[0]]) + str(dict[k[-1]])
     sum += int(sumstr)
-    sumstr = ""
+
 logger.info(f"part 2 sum = {sum}")
