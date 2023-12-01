@@ -1,8 +1,9 @@
 import functools
 import inspect
-import sys
 import time
 from pprint import pformat
+
+from loguru import logger
 
 getframe_expr = "sys._getframe({}).f_code.co_name"
 
@@ -47,15 +48,15 @@ def debug(func):
         caller = eval(getframe_expr.format(2))
         callers_caller = eval(getframe_expr.format(3))
 
-        Logger.info(f"{caller}: was called by: {callers_caller}")
-        Logger.info(f"{caller}: Calling {func.__name__},")
-        Logger.info(f"{func.__name__}: Args:\n {argstr}")
-        Logger.info(f"{func.__name__}: Kwargs:\n {kwargstr}")
+        logger.info(f"{caller}: was called by: {callers_caller}")
+        logger.info(f"{caller}: Calling {func.__name__},")
+        logger.info(f"{func.__name__}: Args:\n {argstr}")
+        logger.info(f"{func.__name__}: Kwargs:\n {kwargstr}")
 
         value = func(*args, **kwargs)
 
         # after function call
-        Logger.info(f"{func.__name__}: returned\n {pformat(value)!s}")
+        logger.info(f"{func.__name__}: returned\n {pformat(value)!s}")
         return value
 
     return wrapper_debug

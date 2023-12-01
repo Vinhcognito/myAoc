@@ -2,6 +2,20 @@ import math
 import os
 from functools import cache
 
+__all__ = [
+    "get_factors",
+    "to_base_n",
+    "sign",
+    "clear_terminal",
+    "list_ints",
+    "list_strs",
+    "extend_list",
+    "extend_list_2D",
+    "extend_list_rect",
+    "print_array",
+    "text2int",
+]
+
 
 @cache
 def get_factors(num: int) -> set[int]:
@@ -46,7 +60,7 @@ def sign(x):
     return int(math.copysign(1, x))
 
 
-def wipeTerminal(s: str = "=", num: int = 80):
+def clear_terminal(s: str = "=", num: int = 80):
     """Use to put a line of separators (str) of length (num) in the terminal"""
     temp = s * num
     os.system("cls" if os.name == "nt" else "clear")
@@ -54,7 +68,7 @@ def wipeTerminal(s: str = "=", num: int = 80):
     return
 
 
-def ints(string: str, digits: int = 0, signs: bool = True):
+def list_ints(string: str, digits: int = 0, signs: bool = True):
     """Returns list of all integers in string
 
 
@@ -93,7 +107,7 @@ def ints(string: str, digits: int = 0, signs: bool = True):
     return intlist
 
 
-def strs(
+def list_strs(
     string: str,
     maxchars: int = 0,
 ):
@@ -127,7 +141,7 @@ def strs(
     return strlist
 
 
-def extendList(input_list: list, index: int, fill=0):
+def extend_list(input_list: list, index: int, fill=0):
     """Returns list extended for index specified to exist, filled with specified char
 
     index:
@@ -144,11 +158,11 @@ def extendList(input_list: list, index: int, fill=0):
         except TypeError:
             tempList = []
             tempList.append(input_list)
-            return extendList(tempList, index, fill)
+            return extend_list(tempList, index, fill)
     return tempList
 
 
-def extendList2D(li: list, index1: int, index2: int, fill=0):
+def extend_list_2D(li: list, index1: int, index2: int, fill=0):
     """Copies contents of a list and returns it extended to just enough
     with initial values = (fill)  for  li[index1][index2] to exist"""
     tempList = li
@@ -157,24 +171,24 @@ def extendList2D(li: list, index1: int, index2: int, fill=0):
     except IndexError:
         while len(tempList) <= index1:
             tempList.append([fill])
-        tempList[index1] = extendList(tempList[index1], index2, fill)
+        tempList[index1] = extend_list(tempList[index1], index2, fill)
     except TypeError:
         while len(tempList) <= index1:
             tempList.append([fill])
-        tempList[index1] = extendList(tempList[index1], index2, fill)
+        tempList[index1] = extend_list(tempList[index1], index2, fill)
     return tempList
 
 
-def extendListRect(li: list, index1: int = 1, index2: int = 1, fill=0):
+def extend_list_rect(li: list, index1: int = 1, index2: int = 1, fill=0):
     """Copies contents of a list and returns it extended so that all possible indices
     within [0,index1]X[0,index2] are created with initial values = (fill)"""
     tempList = li
     for i in range(index1):
-        tempList = extendList2D(tempList, i, index2 - 1, fill)
+        tempList = extend_list_2D(tempList, i, index2 - 1, fill)
     return tempList
 
 
-def printArray(
+def print_array(
     input_array: list,
     hRange=[],
     vRange=[],
