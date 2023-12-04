@@ -106,6 +106,7 @@ def ints(string: str, digits: int = 0, signs: bool = True):
     """
     intlist = []
     tempString = []
+    poslist = []
     count = 0
     for idx, c in enumerate(string):
         if str(c).isnumeric():
@@ -116,17 +117,20 @@ def ints(string: str, digits: int = 0, signs: bool = True):
             count += 1
             if count == digits:
                 intlist.append(int("".join(tempString)))
+                poslist.append(idx - len(str(intlist[-1])))
                 tempString = []
                 count = 0
         else:
             if count >= 1:
                 intlist.append(int("".join(tempString)))
+                poslist.append(idx - len(str(intlist[-1])))
                 tempString = []
                 count = 0
 
     if count >= 1:
         intlist.append(int("".join(tempString)))
-    return intlist
+        poslist.append(idx - len(str(intlist[-1])))
+    return intlist, poslist
 
 
 def strs(
