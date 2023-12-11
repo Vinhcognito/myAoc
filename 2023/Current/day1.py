@@ -1,22 +1,17 @@
-import itertools  # noqa: F401
 import re
 
 from helpers import get_locations, read_input
-from loguru import logger  # noqa: F401
-from util import clear_terminal, text2int
+from util import text2int
 
 DAY = 1
 
 locations = get_locations(f"day{DAY}")
-# logger.add(f"{locations.log_file}", backtrace=True, diagnose=True)
-clear_terminal()
 
 content = read_input(locations.input_file)
 cl = content.split("\n")
 
 NUMS = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
 WORDS = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
-
 
 # part 1
 sum = 0
@@ -31,7 +26,7 @@ for line in cl:
     sumstr = li[0] + li[-1]
     sum += int(sumstr)
 
-logger.info(f"part 1 sum = {sum}")
+print(f"part 1 sum = {sum}")
 
 
 # part 2
@@ -54,4 +49,4 @@ for line in cl:
     sumstr = str(dict[k[0]]) + str(dict[k[-1]])
     sum += int(sumstr)
 
-logger.info(f"part 2 sum = {sum}")
+print(f"part 2 sum = {sum}")

@@ -1,30 +1,14 @@
 import copy
-from pprint import pprint  # noqa: F401
 
-from decorators import timer  # noqa:F401
-from helpers import Grid, Point, get_locations, read_input  # noqa: F401
-from loguru import logger  # noqa: F401
-from util import (  # noqa: F401
-    clear_terminal,
-    extend_list,
-    extend_list_2D,
-    extend_list_rect,
-    ints,
-    logger_config,
-    print_array,
-    wait_for_input,
-)
+from helpers import get_locations, read_input  # noqa: F401
+from util import ints
 
 DAY = 5
 
 locations = get_locations(f"day{DAY}")
-logger.add(f"{locations.log_file}", backtrace=True, diagnose=True)
-logger_config(logger)
-clear_terminal()
 
 content = read_input(locations.example_file)
 cl = content.split("\n")
-
 
 ### part 1
 sum = 0
