@@ -1,2 +1,2 @@
-aocd 11 2023 > Inputs\\day11.txt
-aocd 11 2023 --example > Inputs\\day11example.txt
+aocd 20 2023 > Inputs\\day20.txt
+aocd 20 2023 --example > Inputs\\day20example.txt

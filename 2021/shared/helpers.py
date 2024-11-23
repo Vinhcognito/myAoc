@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from typing import Any
-
 __all__ = [
     "read_input",
     "staticproperty",
@@ -9,7 +7,8 @@ __all__ = [
     "get_locations",
     "Point",
     "Vectors",
-    "print_dict_as_array",
+    "VectorDicts",
+    "Grid",
 ]
 import math
 import os
@@ -17,6 +16,7 @@ from dataclasses import asdict, dataclass
 from datetime import datetime
 from enum import Enum
 from pathlib import Path
+from typing import Any
 
 INPUT_FOLDER: str = os.path.join(os.getcwd(), "Inputs")
 
@@ -186,27 +186,18 @@ class Point:
         return f"Point({self.x},{self.y})"
 
 
-class Vectors:
+class Vectors(Enum):
     """Enumeration of 8 directions.
-    Note: y axis increments in the North direction, i.e. N = (0, -1)"""
+    Note: y axis increments in the North direction, i.e. N = (0, 1)"""
 
-    N = Point(0, -1)
-    NE = Point(1, -1)
-    E = Point(1, 0)
-    SE = Point(1, 1)
-    S = Point(0, 1)
-    SW = Point(-1, 1)
-    W = Point(-1, 0)
-    NW = Point(-1, -1)
-
-    T = Point(0, -1)
-    TR = Point(1, -1)
-    R = Point(1, 0)
-    BR = Point(1, 1)
-    B = Point(0, 1)
-    BL = Point(-1, 1)
-    L = Point(-1, 0)
-    TL = Point(-1, -1)
+    N = (0, 1)
+    NE = (1, 1)
+    E = (1, 0)
+    SE = (1, -1)
+    S = (0, -1)
+    SW = (-1, -1)
+    W = (-1, 0)
+    NW = (-1, 1)
 
     @property
     def y_inverted(self):
@@ -214,29 +205,6 @@ class Vectors:
         x, y = self.value
         return (x, -y)
 
-
-def print_dict_as_array(input: dict[Point, Any], default=" ") -> None:
-    """prints out a dict with points as keys, as if it were an array with points not in the dict printed as default:(" ")"""
-
-    array_start = Point(min(pt.x for pt in input), min(pt.y for pt in input))
-    array_end = Point(max(pt.x for pt in input), max(pt.y for pt in input))
-
-    # create array
-    arr = []
-    for y in range(array_start.y, array_end.y + 1):
-        arr.append([])
-        for x in range(array_start.x, array_end.x + 1):
-            arr[y - array_start.y].append(default)
-
-    for point in input.keys():
-        arr[point.y - array_start.y][point.x - array_start.x] = str(input[point])
-
-    print("printing dict as array: \n")
-    for row in arr:
-        print("".join(row))
-
-
-'''
 
 class VectorDicts:
     """Contains constants for Vectors"""
@@ -266,6 +234,39 @@ class VectorDicts:
         "tl": (-1, 1),
         "t": (0, 1),
     }
+
+
+class DictGrid:
+    """2D grid of values, key = Point"""
+
+    def __init__(self, grid_array: list) -> None:
+        self._array = grid_array
+        self._grid = dict()
+        self._width = len(self._array[0])
+        self._height = len(self._array)
+
+    def get_value_at_point(self, point: Point) -> Any:
+        """Value at this point"""
+        return self._grid[point.x][point.y]
+
+    def set_value_at_point(self, point: Point, value: Any) -> None:
+        self._grid[point.x][point.y] - value
+
+    def is_point_within(self, point: Point) -> bool:
+        """check if a point is within the grid"""
+        if 0 <= point.x < self._width and 0 <= point.y < self._height:
+            return True
+        return False
+
+    @property
+    def width(self):
+        """Grid width (cols)"""
+        return self._width
+
+    @property
+    def height(self):
+        """Grid height (rows)"""
+        return self._height
 
 
 class Grid:
@@ -318,4 +319,3 @@ class Grid:
 
     def __str__(self) -> str:
         return "\n".join("".join(map(str, row)) for row in self._array)
-'''

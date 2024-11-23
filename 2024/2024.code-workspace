@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"notebook.formatOnSave.enabled": true,
+		"notebook.output.wordWrap": true,
+		"notebook.output.textLineLimit": 200
+	}
+}
