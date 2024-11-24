@@ -10,11 +10,13 @@ from shared.util import (
     extend_list,
     extend_list_2D,
     extend_list_rect,
+    ints,
     log,
     logger_config,
     logger_enable,
     logger_init,
     print_array,
+    strs,
     wait_for_input,
 )
 
@@ -26,7 +28,9 @@ DAY = 1
 locations = get_locations(f"day{DAY}")
 
 
-content = read_input(locations.example_file)
-# content = read_input(locations.input_file)
+# content = read_input(locations.example_file)
+content = read_input(locations.input_file)
 
 cl = content.split("\n")
+for line in cl:
+    print(line)
