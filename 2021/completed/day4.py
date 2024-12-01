@@ -139,7 +139,7 @@ class Board:
                 return True
         return False
 
-    def get_pos(self, number):
+    def get_pos(self, number) -> tuple[int, int]:
         index = self.li.index(number)
         row = index // 5
         col = index % 5

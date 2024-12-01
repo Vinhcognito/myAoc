@@ -51,6 +51,7 @@ def start_day():
     parser.add_argument(
         "day_number", type=int, nargs="?", default=None, help="Day number"
     )
+    parser.add_argument("--file", help="File to run")
     args = parser.parse_args()
 
     # Get the absolute path of the current directory
@@ -74,7 +75,19 @@ def start_day():
             subfolder_path = current_dir / subfolder
             sys.path.append(str(subfolder_path))
 
-        if args.day_number is None:
+        if args.file:
+            script_path = Path(args.file)
+            if script_path.exists():
+                print(f"Running {script_path}")
+
+                spec = importlib.util.spec_from_file_location(
+                    "custom_script", str(script_path)
+                )
+                module = importlib.util.module_from_spec(spec)
+                sys.modules["custom_script"] = module
+                spec.loader.exec_module(module)
+
+        elif args.day_number is None:
             # Run tester.py if no day number is provided
             tester_script = current_dir / "current" / "tester.py"
 
@@ -89,6 +102,7 @@ def start_day():
 
             else:
                 print(f"Tester script not found at {tester_script}")
+
         else:
             # Search for the day's script in the subfolders
             script_found = False
