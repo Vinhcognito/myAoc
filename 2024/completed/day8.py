@@ -86,6 +86,38 @@ class Grid:
 
         print(f"Part 1: {len(self.nodes)}")
 
+    def get_valid_antinodes_in_line(self, p1: Point, p2: Point):
+        """for part two"""
+        self.nodes.add(p1)
+        self.nodes.add(p2)
+
+        a1_diff = p2 - p1
+        a1 = p2 + a1_diff
+        while (0 <= a1.row < self.rows) and (0 <= a1.col < self.cols):
+            self.nodes.add(a1)
+            a1 += a1_diff
+
+        a2_diff = p1 - p2
+        a2 = p1 + a2_diff
+        while (0 <= a2.row < self.rows) and (0 <= a2.col < self.cols):
+            self.nodes.add(a2)
+            a2 += a2_diff
+
+        return
+
+    @timer
+    def part_two(self):
+        grouped = self.group_keys_by_signal()
+
+        for key, value in grouped.items():
+            combs = self.get_all_combinations(value)
+            for pair in combs:
+                self.get_valid_antinodes_in_line(*pair)
+
+        print(f"Part 2: {len(self.nodes)}")
+
 
 grid = Grid(content)
-grid.part_one()
+# grid.part_one()
+
+grid.part_two()
