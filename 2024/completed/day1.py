@@ -5,6 +5,7 @@ from dataclasses import dataclass, field
 from functools import reduce
 from pprint import pprint
 
+from shared.decorators import timer
 from shared.helpers import Grid, Point, Vectors, get_locations, read_input
 from shared.util import (
     extend_list,
@@ -23,10 +24,10 @@ from shared.util import (
 logger_init()
 logger_enable(log, "day1")
 
+
 DAY = 1
 
 locations = get_locations(f"day{DAY}")
-
 
 # content = read_input(locations.example_file)
 content = read_input(locations.input_file)
@@ -48,19 +49,24 @@ for i, v in enumerate(lefts):
     sum += abs(lefts[i] - rights[i])
 print(f"Part1: {sum}")
 
-
 # part 2
 
-left = []
-right = Counter()
 
-for line in cl:
-    left.append(ints(line)[0][0])
-    right[ints(line)[0][1]] += 1
+@timer
+def part2():
+    left = []
+    right = Counter()
 
-sum = 0
+    for line in cl:
+        left.append(ints(line)[0][0])
+        right[ints(line)[0][1]] += 1
 
-for n in lefts:
-    sum += n * right[n]
+    sum = 0
 
-print(f"Part2: {sum}")
+    for n in lefts:
+        sum += n * right[n]
+
+    print(f"Part2: {sum}")
+
+
+part2()

@@ -122,6 +122,14 @@ class Point:
         """(0,0)"""
         return Point(0, 0)
 
+    @property
+    def row(self) -> int:
+        return self.y
+
+    @property
+    def col(self) -> int:
+        return self.x
+
     def yield_neighbours(self, include_diagonals=True, include_self=False):
         """Generator to yield neighbouring Points"""
 

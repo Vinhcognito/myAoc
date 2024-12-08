@@ -75,6 +75,11 @@ def get_factors(num: int) -> set[int]:
     return factors
 
 
+def clamp(value, min_val, max_val):
+    """returns value with limits at min or max"""
+    return min(max(value, min_val), max_val)
+
+
 def wait_for_input():
     """function for pausing a stream of printouts until user input is received"""
     input("")

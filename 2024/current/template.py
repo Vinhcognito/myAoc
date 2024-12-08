@@ -5,6 +5,7 @@ from dataclasses import dataclass, field
 from functools import reduce
 from pprint import pprint
 
+from shared.decorators import timer
 from shared.helpers import Grid, Point, Vectors, get_locations, read_input
 from shared.util import (
     extend_list,
