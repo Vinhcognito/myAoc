@@ -27,13 +27,15 @@ def read_input(file_path: str):
         input = open(file_path, "r", encoding="utf16", errors="ignore")
         return input.read().strip()
     except UnicodeError:
-        print("Unicode Error")
+        # print("Unicode Error")
+        print()
 
     try:
         input = open(file_path, "r", errors="ignore")
         return input.read().strip()
     except UnicodeError:
-        print("Unicode Error")
+        # print("Unicode Error")
+        print()
 
 
 class staticproperty(property):

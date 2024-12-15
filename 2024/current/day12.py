@@ -22,9 +22,9 @@ from shared.util import (
 )
 
 logger_init()
-logger_enable(log, "9")
+logger_enable(log, "12")
 
-DAY = 9
+DAY = 12
 
 locations = get_locations(f"day{DAY}")
 
