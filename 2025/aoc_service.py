@@ -3,13 +3,15 @@ import os
 import re
 import subprocess
 import time
+import timeit
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
+from statistics import mean
 
 import db
 
-PERSON = "m"
+PERSON = "v"
 
 
 def download(current_date=datetime.now()):
@@ -32,13 +34,12 @@ def download(current_date=datetime.now()):
             command = f"aocd {day} {current_date.year} > {input_filename}"
             subprocess.run(command, shell=True, check=True)
             print(f"Downloaded input for day {day}, year {current_date.year}")
-        else:
-            print(f"Input file for day {day}, year {current_date.year} already exists.")
 
         # Download example
-        command = f"aocd {day} {current_date.year} --example > {example_filename}"
-        subprocess.run(command, shell=True, check=True)
-        print(f"Downloaded example for day {day}, year {current_date.year}")
+        if not os.path.exists(example_filename):
+            command = f"aocd {day} {current_date.year} --example > {example_filename}"
+            subprocess.run(command, shell=True, check=True)
+            print(f"Downloaded example for day {day}, year {current_date.year}")
 
 
 def generate_scripts(date=datetime.now()):
@@ -61,17 +62,13 @@ example_input = "inputs\\\\day{day}example.txt"
 def test_day{day}example():
     examples = parse_example({day})
 
-    for idx, example in enumerate(examples):
-        part = idx + 1
+    for example in examples:
         input = example.input_data
         expected_answer_a = example.answer_a
         expected_answer_b = example.answer_b
 
-        if part == 1:
-            assert expected_answer_a == str(day{day}.part_one(input))
-
-        if part == 2:
-            assert expected_answer_b == str(day{day}.part_two(input))
+        assert expected_answer_a == str(day{day}.part_one(input))
+        assert expected_answer_b == str(day{day}.part_two(input))
 
     assert len(examples) > 0
     
@@ -113,24 +110,38 @@ def record_run_result(
         db.create_record(year, day, part, result_time, timestamp, comment, person, code)
 
 
-def run(day: int, part: int):
+def run(day: int, part: int, repeat: int = 1):
     try:
         module = importlib.import_module(f"solutions.day{day}")
         func = getattr(module, "part_one" if part == 1 else "part_two")
 
         with open(f"inputs\\day{day}.txt", "r") as f:
-            input_text = f.read()
+            input_text = f.read().strip()
 
         start = time.perf_counter()
         answer = func(input_text)
         end = time.perf_counter()
         result_time = end - start
-        print(f"day{day} part{part} answer: {answer}, time: {result_time:.6f} seconds")
+
+        if repeat > 1:
+
+            def to_run():
+                func(input_text)
+
+            result_time = mean(timeit.repeat(to_run, repeat=repeat, number=1))
+            print(
+                f"day{day} part{part} answer: {answer}, avg time: {result_time:.6f} seconds"
+            )
+        else:
+            print(
+                f"day{day} part{part} answer: {answer}, time: {result_time:.6f} seconds"
+            )
+
         return answer, result_time
     except ImportError as e:
         print(f"Error importing module: {e}")
     except AttributeError:
-        print("Module imported but 'main' function not found")
+        print("Module to import not found")
 
 
 def parse_example(day: int):
