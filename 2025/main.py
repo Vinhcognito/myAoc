@@ -4,14 +4,14 @@ import pytest
 
 import aoc_service as a
 
-REPEAT = 3
+REPEAT = 10
 
 
 def main():
-    date = datetime(year=2025, month=12, day=2)
-    # run_one(12850231731, date, "initial brute force", True)
+    date = datetime(year=2025, month=12, day=3)
+    # run_one(1527, date, "init with point class fr", True)
 
-    run_two(24774350322, date, "init very brute", False)
+    run_two(169709990062889, date, "using list iteration with set of idx", True)
 
 
 def run_one(

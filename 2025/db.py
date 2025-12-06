@@ -6,7 +6,7 @@ from typing import TypedDict
 from pymongo import MongoClient
 from pymongo.server_api import ServerApi
 
-MONGODB_URI = ""
+MONGODB_URI = "mongodb+srv://admin:X9FlSCvLuKAaMdSS@cluster0.ceiuzrd.mongodb.net/"
 
 
 def init_client():

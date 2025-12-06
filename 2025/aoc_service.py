@@ -80,11 +80,11 @@ def test_day{day}example():
     # Generate solution script
     solution_fpath = f"solutions\\day{day}.py"
     solution_content = """
-def part_one(input):
+def part_one(input:str):
     return "-"
 
 
-def part_two(input):
+def part_two(input:str):
     return "-"
     """
     if not Path(solution_fpath).exists():
