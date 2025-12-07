@@ -5,7 +5,7 @@ import subprocess
 import time
 import timeit
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from statistics import mean
 
@@ -13,10 +13,21 @@ import db
 
 PERSON = "v"
 
+# 256-color ANSI escape codes
+GREEN = "\033[0;32m"
+BLUE = "\033[0;34m"
+PURPLE = "\033[0;35m"
+CYAN = "\033[0;36m"
+ORANGE = "\x1b[38;5;208m"  # Orange from 256-color palette
+RESET = "\x1b[0m"
+
+PART_ONE_COLOR = CYAN
+PART_TWO_COLOR = GREEN
+
 
 def download(current_date=datetime.now()):
     # Get current date
-    print(current_date)
+    # print(current_date)
 
     # Ensure we're in December
     if current_date.month != 12:
@@ -80,11 +91,11 @@ def test_day{day}example():
     # Generate solution script
     solution_fpath = f"solutions\\day{day}.py"
     solution_content = """
-def part_one(input:str):
+def part_one(input: str):
     return "-"
 
 
-def part_two(input:str):
+def part_two(input: str):
     return "-"
     """
     if not Path(solution_fpath).exists():
@@ -103,7 +114,7 @@ def record_run_result(
     result_time: float,
     comment: str = "",
     person=PERSON,
-    timestamp: datetime = datetime.now(),
+    timestamp: datetime = datetime.now(timezone.utc),
 ):
     with open(f"solutions\\day{day}.py", "r") as f:
         code = f.read().strip()
@@ -123,6 +134,7 @@ def run(day: int, part: int, repeat: int = 1):
         end = time.perf_counter()
         result_time = end - start
 
+        color = PART_ONE_COLOR if part == 1 else PART_TWO_COLOR
         if repeat > 1:
 
             def to_run():
@@ -130,18 +142,20 @@ def run(day: int, part: int, repeat: int = 1):
 
             result_time = mean(timeit.repeat(to_run, repeat=repeat, number=1))
             print(
-                f"day{day} part{part} answer: {answer}, avg time: {result_time:.6f} seconds"
+                f"Day {day} {color}Part {part}{RESET} Answer: {color}{answer}{RESET}, Avg Time ({repeat}): {color}{result_time:.6f}{RESET} seconds"
             )
         else:
             print(
-                f"day{day} part{part} answer: {answer}, time: {result_time:.6f} seconds"
+                f"Day {day} {color}Part {part}{RESET} Answer: {color}{answer}{RESET}, Time: {color}{result_time:.6f}{RESET} seconds"
             )
 
         return answer, result_time
     except ImportError as e:
         print(f"Error importing module: {e}")
+
     except AttributeError:
         print("Module to import not found")
+    return None, 0.0
 
 
 def parse_example(day: int):
