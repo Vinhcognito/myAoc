@@ -5,7 +5,6 @@ vlogger.py
 logs
 
 # vscode black formatter settings
-.vscode/
 MobiPik.code-workspace
 
 Inputs
@@ -183,3 +182,4 @@ test*.png
 images/temp/
 settings.txt
 
+/2026/_inputs
