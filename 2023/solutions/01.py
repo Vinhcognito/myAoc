@@ -1,4 +1,4 @@
-from aocd.models import Puzzle
+# from aocd.models import Puzzle
 
 from utils import cat
 
@@ -6,7 +6,7 @@ from utils import cat
 
 
 # data: str = Puzzle(2025, day=1).examples[0].input_data
-data: str = Puzzle(2025, 1).input_data
+# data: str = Puzzle(2025, 1).input_data
 
 
 def part_one(data: str):
@@ -19,5 +19,5 @@ def part_two(data: str):
     print("test2")
 
 
-print(part_one(data))
-print(part_two(data))
+print(part_one(""))
+print(part_two(""))
