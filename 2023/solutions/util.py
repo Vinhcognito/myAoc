@@ -16,6 +16,7 @@ __all__ = [
     "extend_list_rect",
     "print_array",
     "text2int",
+    "cat",
 ]
 
 
@@ -425,3 +426,7 @@ def text2int(textnum, numwords={}):
             current = 0
 
     return result + current
+
+
+def cat():
+    print("cat")

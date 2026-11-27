@@ -1,7 +1,6 @@
-import sys
-import utils
-from aocd.examples import Example
 from aocd.models import Puzzle
+
+from utils import cat
 
 # data: str = sys.stdin.read()
 
@@ -12,7 +11,7 @@ data: str = Puzzle(2025, 1).input_data
 
 def part_one(data: str):
     lines = data.split("\n")
-    utils.cat()
+    cat()
 
 
 def part_two(data: str):
